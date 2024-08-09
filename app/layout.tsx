@@ -1,10 +1,11 @@
 import type { Metadata } from "next";
-import { Manrope } from "next/font/google";
+import { Noto_Sans } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
 import "./globals.css";
 import Header from "@/components/Header";
+import { ThemeProvider } from "@/components/theme-provider";
 
-const manrope = Manrope({ subsets: ["latin"] });
+const notoSans = Noto_Sans({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "BoxDrive",
@@ -20,9 +21,16 @@ export default function RootLayout({
   return (
     <ClerkProvider afterSignOutUrl="/">
       <html lang="en">
-        <body className={manrope.className}>
-          <Header />
-          {children}
+        <body className={notoSans.className}>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="system"
+            enableSystem
+            disableTransitionOnChange
+          >
+            <Header />
+            {children}
+          </ThemeProvider>
         </body>
       </html>
     </ClerkProvider>
