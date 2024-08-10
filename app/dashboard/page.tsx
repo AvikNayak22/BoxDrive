@@ -1,12 +1,35 @@
 import { auth } from "@clerk/nextjs/server";
+import { collection, getDocs } from "firebase/firestore";
 import DropzoneComponent from "@/components/DropzoneComponent";
+import { db } from "@/firebase";
+import { FileType } from "@/typings";
+import TableWrapper from "@/components/table/TableWrapper";
 
-function Dashboard() {
+async function Dashboard() {
   const { userId } = auth();
 
+  const docsResults = await getDocs(collection(db, "users", userId!, "files"));
+  const skeletonFiles: FileType[] = docsResults.docs.map((doc) => ({
+    id: doc.id,
+    filename: doc.data().filename || doc.id,
+    timeStamp: new Date(doc.data().timeStamp?.seconds * 1000) || undefined,
+    fullName: doc.data().fullName,
+    downloadURL: doc.data().downloadURL,
+    type: doc.data().type,
+    size: doc.data().size,
+  }));
+
   return (
-    <div>
+    <div className="border-t">
       <DropzoneComponent />
+
+      <section className="container space-y-5">
+        <h2 className="font-bold">All Files</h2>
+        <div>
+          {/* TableWrapper */}
+          <TableWrapper skeletonFiles={skeletonFiles} />
+        </div>
+      </section>
     </div>
   );
 }

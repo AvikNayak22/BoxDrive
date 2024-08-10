@@ -4,6 +4,15 @@ import { useState } from "react";
 import { useUser } from "@clerk/nextjs";
 import { cn } from "@/lib/utils";
 import Dropzone from "react-dropzone";
+import {
+  addDoc,
+  collection,
+  doc,
+  serverTimestamp,
+  updateDoc,
+} from "firebase/firestore";
+import { db, storage } from "@/firebase";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
 const DropzoneComponent = () => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -29,17 +38,34 @@ const DropzoneComponent = () => {
 
     setLoading(true);
 
+    //addDoc -> users/user123/files
+    const docRef = await addDoc(collection(db, "users", user.id, "files"), {
+      userId: user.id,
+      filename: selectedFile.name,
+      fullName: user.fullName,
+      profileImg: user.imageUrl,
+      timeStamp: serverTimestamp(),
+      type: selectedFile.type,
+      size: selectedFile.size,
+    });
+
+    const imageRef = ref(storage, `users/${user.id}/files/${docRef.id}`);
+
+    uploadBytes(imageRef, selectedFile).then(async (snapshot) => {
+      const downloadURL = await getDownloadURL(imageRef);
+
+      await updateDoc(doc(db, "users", user.id, "files", docRef.id), {
+        downloadURL: downloadURL,
+      });
+    });
+
     setLoading(false);
   };
 
   const maxSize = 20971520; //20MB
 
   return (
-    <Dropzone
-      minSize={0}
-      maxSize={maxSize}
-      onDrop={(acceptedFiles) => console.log(acceptedFiles)}
-    >
+    <Dropzone minSize={0} maxSize={maxSize} onDrop={onDrop}>
       {({
         getRootProps,
         getInputProps,
@@ -51,7 +77,7 @@ const DropzoneComponent = () => {
           fileRejections.length > 0 && fileRejections[0].file.size > maxSize;
 
         return (
-          <section className="m-4">
+          <section className="m-4 cursor-pointer">
             <div
               {...getRootProps()}
               className={cn(
