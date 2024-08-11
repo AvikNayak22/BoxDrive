@@ -22,8 +22,8 @@ async function Dashboard() {
   return (
     <div className="border-t">
       <DropzoneComponent />
-
-      <section className="container space-y-5">
+      <hr />
+      <section className="container space-y-5 my-2">
         <h2 className="font-bold">All Files</h2>
         <div>
           {/* TableWrapper */}
