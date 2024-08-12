@@ -105,6 +105,8 @@ export function DataTable<TData, TValue>({
 
   return (
     <>
+      <DeleteModal />
+      <RenameModal />
       <div className="rounded-md border">
         <Table>
           <TableHeader>
@@ -132,9 +134,6 @@ export function DataTable<TData, TValue>({
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
                 >
-                  <DeleteModal />
-                  <RenameModal />
-
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
                       {cell.column.id === "timeStamp" ? (
