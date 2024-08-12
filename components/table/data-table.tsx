@@ -5,6 +5,7 @@ import {
   flexRender,
   getCoreRowModel,
   useReactTable,
+  getPaginationRowModel,
 } from "@tanstack/react-table";
 
 import {
@@ -35,6 +36,12 @@ export function DataTable<TData, TValue>({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
+    getPaginationRowModel: getPaginationRowModel(),
+    initialState: {
+      pagination: {
+        pageSize: 5,
+      },
+    },
   });
 
   const [setFileId, setFilename, setIsDeleteModalOpen, setIsRenameModalOpen] =
@@ -57,87 +64,113 @@ export function DataTable<TData, TValue>({
   }
 
   return (
-    <div className="rounded-md border">
-      <Table>
-        <TableHeader>
-          {table.getHeaderGroups().map((headerGroup) => (
-            <TableRow key={headerGroup.id}>
-              {headerGroup.headers.map((header) => {
-                return (
-                  <TableHead key={header.id}>
-                    {header.isPlaceholder
-                      ? null
-                      : flexRender(
-                          header.column.columnDef.header,
-                          header.getContext()
-                        )}
-                  </TableHead>
-                );
-              })}
-            </TableRow>
-          ))}
-        </TableHeader>
-        <TableBody>
-          {table.getRowModel().rows?.length ? (
-            table.getRowModel().rows.map((row) => (
-              <TableRow
-                key={row.id}
-                data-state={row.getIsSelected() && "selected"}
-              >
-                <DeleteModal />
-                <RenameModal />
+    <>
+      <div className="rounded-md border">
+        <Table>
+          <TableHeader>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <TableRow key={headerGroup.id}>
+                {headerGroup.headers.map((header) => {
+                  return (
+                    <TableHead key={header.id}>
+                      {header.isPlaceholder
+                        ? null
+                        : flexRender(
+                            header.column.columnDef.header,
+                            header.getContext()
+                          )}
+                    </TableHead>
+                  );
+                })}
+              </TableRow>
+            ))}
+          </TableHeader>
+          <TableBody>
+            {table.getRowModel().rows?.length ? (
+              table.getRowModel().rows.map((row) => (
+                <TableRow
+                  key={row.id}
+                  data-state={row.getIsSelected() && "selected"}
+                >
+                  <DeleteModal />
+                  <RenameModal />
 
-                {row.getVisibleCells().map((cell) => (
-                  <TableCell key={cell.id}>
-                    {cell.column.id === "timeStamp" ? (
-                      <div className="flex flex-col">
-                        <div className="text-sm">
-                          {(cell.getValue() as Date).toLocaleDateString()}
+                  {row.getVisibleCells().map((cell) => (
+                    <TableCell key={cell.id}>
+                      {cell.column.id === "timeStamp" ? (
+                        <div className="flex flex-col">
+                          <div className="text-sm">
+                            {(cell.getValue() as Date).toLocaleDateString()}
+                          </div>
+                          <div className="text-xs text-gray-500">
+                            {(cell.getValue() as Date).toLocaleTimeString()}
+                          </div>
                         </div>
-                        <div className="text-xs text-gray-500">
-                          {(cell.getValue() as Date).toLocaleTimeString()}
-                        </div>
-                      </div>
-                    ) : cell.column.id === "filename" ? (
-                      <p
-                        onClick={() => {
-                          openRenameModal(
-                            (row.original as FileType).id,
-                            (row.original as FileType).filename
-                          );
-                        }}
-                        className="underline flex items-center text-green-500 hover:cursor-pointer"
-                      >
-                        {cell.getValue() as string}
-                        <Pencil1Icon className="ml-2 size-4" />
-                      </p>
-                    ) : (
-                      flexRender(cell.column.columnDef.cell, cell.getContext())
-                    )}
+                      ) : cell.column.id === "filename" ? (
+                        <p
+                          onClick={() => {
+                            openRenameModal(
+                              (row.original as FileType).id,
+                              (row.original as FileType).filename
+                            );
+                          }}
+                          className="underline flex items-center text-green-500 hover:cursor-pointer"
+                        >
+                          {cell.getValue() as string}
+                          <Pencil1Icon className="ml-2 size-4" />
+                        </p>
+                      ) : (
+                        flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )
+                      )}
+                    </TableCell>
+                  ))}
+
+                  <TableCell key={(row.original as FileType).id}>
+                    <Button
+                      variant="outline"
+                      onClick={() => {
+                        openDeleteModal((row.original as FileType).id);
+                      }}
+                    >
+                      <TrashIcon className="size-5 " color="red" />
+                    </Button>
                   </TableCell>
-                ))}
-
-                <TableCell key={(row.original as FileType).id}>
-                  <Button
-                    variant="outline"
-                    onClick={() => {
-                      openDeleteModal((row.original as FileType).id);
-                    }}
-                  >
-                    <TrashIcon className="size-5 " color="red" />
-                  </Button>
+                </TableRow>
+              ))
+            ) : (
+              <TableRow>
+                <TableCell
+                  colSpan={columns.length}
+                  className="h-24 text-center"
+                >
+                  You have no files.
                 </TableCell>
               </TableRow>
-            ))
-          ) : (
-            <TableRow>
-              <TableCell colSpan={columns.length} className="h-24 text-center">
-                You have no files.
-              </TableCell>
-            </TableRow>
-          )}
-        </TableBody>
-      </Table>
-    </div>
+            )}
+          </TableBody>
+        </Table>
+      </div>
+      <div className="flex items-center justify-center space-x-2 py-4">
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => table.previousPage()}
+          disabled={!table.getCanPreviousPage()}
+        >
+          Previous
+        </Button>
+        <Button
+          variant="outline"
+          size="sm"
+          onClick={() => table.nextPage()}
+          disabled={!table.getCanNextPage()}
+        >
+          Next
+        </Button>
+      </div>
+    </>
   );
 }
