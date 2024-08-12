@@ -13,7 +13,7 @@ import {
 } from "firebase/firestore";
 import { db, storage } from "@/firebase";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 
 const DropzoneComponent = () => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -64,6 +64,9 @@ const DropzoneComponent = () => {
 
     toast.success("Uploaded successfully", {
       id: toastId,
+      style: {
+        color: "green",
+      },
     });
 
     setLoading(false);

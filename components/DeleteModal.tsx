@@ -14,7 +14,7 @@ import { useAppStore } from "@/store/store";
 import { useUser } from "@clerk/nextjs";
 import { deleteDoc, doc } from "firebase/firestore";
 import { deleteObject, ref } from "firebase/storage";
-import toast from "react-hot-toast";
+import { toast } from "sonner";
 
 export function DeleteModal() {
   const { user } = useUser();
@@ -40,6 +40,9 @@ export function DeleteModal() {
           deleteDoc(doc(db, "users", user.id, "files", fileId)).then(() => {
             toast.success("Deleted successfully", {
               id: toastId,
+              style: {
+                color: "green",
+              },
             });
           });
         })
@@ -51,6 +54,9 @@ export function DeleteModal() {
       setIsDeleteModalOpen(false);
       toast.error("Error deleting document", {
         id: toastId,
+        style: {
+          color: "red",
+        },
       });
     }
   }

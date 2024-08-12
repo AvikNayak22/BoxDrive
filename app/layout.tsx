@@ -4,7 +4,7 @@ import { ClerkProvider } from "@clerk/nextjs";
 import "./globals.css";
 import Header from "@/components/Header";
 import { ThemeProvider } from "@/components/theme-provider";
-import { Toaster } from "react-hot-toast";
+import { Toaster } from "@/components/ui/sonner";
 
 const notoSans = Noto_Sans({ subsets: ["latin"] });
 
@@ -31,7 +31,7 @@ export default function RootLayout({
           >
             <Header />
             {children}
-            <Toaster />
+            <Toaster position="top-center" />
           </ThemeProvider>
         </body>
       </html>
