@@ -26,7 +26,7 @@ export default function Home() {
           className="flex items-center text-md cursor-pointer bg-white dark:bg-black  text-black dark:text-white p-4 w-fit shadow-md"
         >
           Try it for free!
-          <ArrowRightIcon className="ml-5" />
+          <ArrowRightIcon className="ml-5 size-4" />
         </Link>
       </div>
 
