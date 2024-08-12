@@ -50,8 +50,6 @@ const TableWrapper = ({ skeletonFiles }: { skeletonFiles: FileType[] }) => {
     Math.min(rowsOnCurrentPage, skeletonFiles.length)
   );
 
-  console.log(rowsOnCurrentPage, modifiedSkeletonFiles.length);
-
   if (docs?.docs.length === undefined)
     return (
       <div className="flex flex-col">
@@ -73,7 +71,7 @@ const TableWrapper = ({ skeletonFiles }: { skeletonFiles: FileType[] }) => {
             );
           })}
 
-          {skeletonFiles.length === 0 && (
+          {modifiedSkeletonFiles.length === 0 && (
             <div className="flex items-center space-x-4 p-5 w-full">
               <Skeleton className="w-12 h-10" />
               <Skeleton className="h-10 w-full" />

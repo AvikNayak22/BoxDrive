@@ -67,9 +67,12 @@ export function DataTable<TData, TValue>({
   });
 
   const { pageIndex, pageSize } = pagination;
+
   const totalRowCount = table.getRowCount();
   const pageCount = table.getPageCount();
+
   const isLastPage = pageIndex === pageCount - 1;
+
   const rowsOnCurrentPage = isLastPage
     ? totalRowCount % pageSize || pageSize
     : pageSize;
