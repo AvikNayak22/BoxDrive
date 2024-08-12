@@ -18,10 +18,16 @@ import {
 } from "@/components/ui/table";
 import { Button } from "../ui/button";
 import { FileType } from "@/typings";
-import { Pencil1Icon, TrashIcon } from "@radix-ui/react-icons";
+import {
+  CaretLeftIcon,
+  CaretRightIcon,
+  Pencil1Icon,
+  TrashIcon,
+} from "@radix-ui/react-icons";
 import { useAppStore } from "@/store/store";
 import { DeleteModal } from "../DeleteModal";
 import RenameModal from "../RenameModal";
+import { useEffect, useState } from "react";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -32,25 +38,55 @@ export function DataTable<TData, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
+  const [pagination, setPagination] = useState({
+    pageIndex: 0,
+    pageSize: 5,
+  });
+
+  useEffect(() => {
+    const storedPagination = localStorage.getItem("tablePagination");
+    if (storedPagination) {
+      setPagination(JSON.parse(storedPagination));
+    }
+  }, []);
+
   const table = useReactTable({
     data,
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
-    initialState: {
-      pagination: {
-        pageSize: 5,
-      },
+    state: {
+      pagination,
+    },
+    onPaginationChange: (updater) => {
+      const newPagination =
+        typeof updater === "function" ? updater(pagination) : updater;
+      setPagination(newPagination);
+      localStorage.setItem("tablePagination", JSON.stringify(newPagination));
     },
   });
 
-  const [setFileId, setFilename, setIsDeleteModalOpen, setIsRenameModalOpen] =
-    useAppStore((state) => [
-      state.setFileId,
-      state.setFilename,
-      state.setIsDeleteModalOpen,
-      state.setIsRenameModalOpen,
-    ]);
+  const { pageIndex, pageSize } = pagination;
+  const totalRowCount = table.getRowCount();
+  const pageCount = table.getPageCount();
+  const isLastPage = pageIndex === pageCount - 1;
+  const rowsOnCurrentPage = isLastPage
+    ? totalRowCount % pageSize || pageSize
+    : pageSize;
+
+  const [
+    setFileId,
+    setFilename,
+    setIsDeleteModalOpen,
+    setIsRenameModalOpen,
+    setRowsOnCurrentPage,
+  ] = useAppStore((state) => [
+    state.setFileId,
+    state.setFilename,
+    state.setIsDeleteModalOpen,
+    state.setIsRenameModalOpen,
+    state.setRowsOnCurrentPage,
+  ]);
 
   function openDeleteModal(fileId: string) {
     setFileId(fileId);
@@ -62,6 +98,10 @@ export function DataTable<TData, TValue>({
     setFilename(filename);
     setIsRenameModalOpen(true);
   }
+
+  useEffect(() => {
+    setRowsOnCurrentPage(rowsOnCurrentPage);
+  }, [rowsOnCurrentPage, setRowsOnCurrentPage]);
 
   return (
     <>
@@ -160,7 +200,7 @@ export function DataTable<TData, TValue>({
           onClick={() => table.previousPage()}
           disabled={!table.getCanPreviousPage()}
         >
-          Previous
+          <CaretLeftIcon className="size-5 " />
         </Button>
         <Button
           variant="outline"
@@ -168,7 +208,7 @@ export function DataTable<TData, TValue>({
           onClick={() => table.nextPage()}
           disabled={!table.getCanNextPage()}
         >
-          Next
+          <CaretRightIcon className="size-5 " />
         </Button>
       </div>
     </>

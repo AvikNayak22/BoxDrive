@@ -9,15 +9,21 @@ async function Dashboard() {
   const { userId } = auth();
 
   const docsResults = await getDocs(collection(db, "users", userId!, "files"));
-  const skeletonFiles: FileType[] = docsResults.docs.map((doc) => ({
-    id: doc.id,
-    filename: doc.data().filename || doc.id,
-    timeStamp: new Date(doc.data().timeStamp?.seconds * 1000) || undefined,
-    fullName: doc.data().fullName,
-    downloadURL: doc.data().downloadURL,
-    type: doc.data().type,
-    size: doc.data().size,
-  }));
+
+  const skeletonFiles: FileType[] = [];
+
+  for (let i = 0; i < 5 && docsResults.docs[i]; i++) {
+    const doc = docsResults.docs[i];
+    skeletonFiles.push({
+      id: doc.id,
+      filename: doc.data().filename || doc.id,
+      timeStamp: new Date(doc.data().timeStamp?.seconds * 1000) || undefined,
+      fullName: doc.data().fullName,
+      downloadURL: doc.data().downloadURL,
+      type: doc.data().type,
+      size: doc.data().size,
+    });
+  }
 
   return (
     <div className="border-t">

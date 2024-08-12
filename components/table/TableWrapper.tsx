@@ -10,11 +10,16 @@ import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { DataTable } from "./data-table";
 import { columns } from "./columns";
+import { useAppStore } from "@/store/store";
 
 const TableWrapper = ({ skeletonFiles }: { skeletonFiles: FileType[] }) => {
   const { user } = useUser();
+
   const [initialFiles, setInitialFiles] = useState<FileType[]>([]);
+
   const [sort, setSort] = useState<"asc" | "desc">("asc");
+
+  const rowsOnCurrentPage = useAppStore((state) => state.rowsOnCurrentPage);
 
   const [docs, loading, error] = useCollection(
     user &&
@@ -40,6 +45,13 @@ const TableWrapper = ({ skeletonFiles }: { skeletonFiles: FileType[] }) => {
     setInitialFiles(files);
   }, [docs]);
 
+  const modifiedSkeletonFiles: FileType[] = skeletonFiles.slice(
+    0,
+    Math.min(rowsOnCurrentPage, skeletonFiles.length)
+  );
+
+  console.log(rowsOnCurrentPage, modifiedSkeletonFiles.length);
+
   if (docs?.docs.length === undefined)
     return (
       <div className="flex flex-col">
@@ -49,7 +61,7 @@ const TableWrapper = ({ skeletonFiles }: { skeletonFiles: FileType[] }) => {
 
         <div className="border rounded-lg">
           <div className="border-b h-10" />
-          {skeletonFiles.map((file) => {
+          {modifiedSkeletonFiles.map((file) => {
             return (
               <div
                 key={file.id}

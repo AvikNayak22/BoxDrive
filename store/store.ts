@@ -12,6 +12,9 @@ interface AppState {
 
   filename: string;
   setFilename: (filename: string) => void;
+
+  rowsOnCurrentPage: number;
+  setRowsOnCurrentPage: (count: number) => void;
 }
 
 export const useAppStore = create<AppState>((set) => ({
@@ -26,4 +29,7 @@ export const useAppStore = create<AppState>((set) => ({
 
   isRenameModalOpen: false,
   setIsRenameModalOpen: (open) => set((state) => ({ isRenameModalOpen: open })),
+
+  rowsOnCurrentPage: 0,
+  setRowsOnCurrentPage: (count: number) => set({ rowsOnCurrentPage: count }),
 }));
