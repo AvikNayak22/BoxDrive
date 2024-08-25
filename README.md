@@ -1,6 +1,6 @@
 # BoxDrive
 
-BoxDrive is a file management application built with Next.js and Firebase. It offers file upload, download, deletion, and renaming functionalities, complete with user authentication and theme switching.
+BoxDrive is a file storage application built with Next.js and Firebase. It offers file upload, download, deletion, and renaming functionalities with user authentication and theme switching.
 
 ## Features
 
