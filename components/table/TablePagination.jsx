@@ -1,12 +1,11 @@
-import React from "react";
 import {
   Pagination,
   PaginationContent,
   PaginationItem,
   PaginationLink,
-  PaginationNext,
-  PaginationPrevious,
 } from "@/components/ui/pagination";
+import { Button } from "../ui/button";
+import { CaretLeftIcon, CaretRightIcon } from "@radix-ui/react-icons";
 
 const TablePagination = ({ table }) => {
   return (
@@ -14,10 +13,13 @@ const TablePagination = ({ table }) => {
       <Pagination>
         <PaginationContent>
           <PaginationItem className="cursor-pointer">
-            <PaginationPrevious
+            <Button
+              variant="ghost"
               onClick={() => table.previousPage()}
               disabled={!table.getCanPreviousPage()}
-            />
+            >
+              <CaretLeftIcon /> Previous
+            </Button>
           </PaginationItem>
           {[...Array(table.getPageCount())].map((_, index) => (
             <PaginationItem key={index} className="cursor-pointer">
@@ -30,10 +32,14 @@ const TablePagination = ({ table }) => {
             </PaginationItem>
           ))}
           <PaginationItem className="cursor-pointer">
-            <PaginationNext
+            <Button
+              variant="ghost"
               onClick={() => table.nextPage()}
               disabled={!table.getCanNextPage()}
-            />
+            >
+              Next
+              <CaretRightIcon />
+            </Button>
           </PaginationItem>
         </PaginationContent>
       </Pagination>

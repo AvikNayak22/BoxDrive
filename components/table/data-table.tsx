@@ -20,18 +20,14 @@ import {
 } from "@/components/ui/table";
 import { Button } from "../ui/button";
 import { FileType } from "@/typings";
-import {
-  CaretLeftIcon,
-  CaretRightIcon,
-  Pencil1Icon,
-  TrashIcon,
-} from "@radix-ui/react-icons";
+import { Pencil1Icon, TrashIcon } from "@radix-ui/react-icons";
 import { useAppStore } from "@/store/store";
 import { DeleteModal } from "../DeleteModal";
 import RenameModal from "../RenameModal";
 import { useEffect, useState } from "react";
 import { Input } from "../ui/input";
 import TablePagination from "./TablePagination";
+import ShareModal from "../ShareModal";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -48,6 +44,7 @@ export function DataTable<TData, TValue>({
   });
 
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+  const [downloadURL, setDownloadURL] = useState<string>("");
 
   useEffect(() => {
     const storedPagination = localStorage.getItem("tablePagination");
@@ -91,6 +88,7 @@ export function DataTable<TData, TValue>({
     setFilename,
     setIsDeleteModalOpen,
     setIsRenameModalOpen,
+    setIsShareModalOpen,
     setRowsOnCurrentPage,
     sort,
     setSort,
@@ -99,6 +97,7 @@ export function DataTable<TData, TValue>({
     state.setFilename,
     state.setIsDeleteModalOpen,
     state.setIsRenameModalOpen,
+    state.setIsShareModalOpen,
     state.setRowsOnCurrentPage,
     state.sort,
     state.setSort,
@@ -115,6 +114,12 @@ export function DataTable<TData, TValue>({
     setIsRenameModalOpen(true);
   }
 
+  function openShareModal(fileId: string, URL: string): void {
+    setFileId(fileId);
+    setDownloadURL(URL);
+    setIsShareModalOpen(true);
+  }
+
   useEffect(() => {
     setRowsOnCurrentPage(rowsOnCurrentPage);
   }, [rowsOnCurrentPage, setRowsOnCurrentPage]);
@@ -123,6 +128,7 @@ export function DataTable<TData, TValue>({
     <>
       <DeleteModal />
       <RenameModal />
+      <ShareModal downloadURL={downloadURL} />
       <div className="flex justify-start gap-2 items-center py-4">
         <Input
           placeholder="Search filename..."
@@ -192,6 +198,18 @@ export function DataTable<TData, TValue>({
                         >
                           {cell.getValue() as string}
                           <Pencil1Icon className="ml-2 size-4" />
+                        </p>
+                      ) : cell.column.id === "downloadURL" ? (
+                        <p
+                          onClick={() =>
+                            openShareModal(
+                              (row.original as FileType).id,
+                              cell.getValue() as string
+                            )
+                          }
+                          className="underline cursor-pointer text-green-500 hover:text-green-600"
+                        >
+                          Share
                         </p>
                       ) : (
                         flexRender(

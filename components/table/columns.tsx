@@ -5,6 +5,7 @@ import { DefaultExtensionType, defaultStyles, FileIcon } from "react-file-icon";
 import { ColumnDef } from "@tanstack/react-table";
 import prettyBytes from "pretty-bytes";
 import { COLOR_EXTENSION_MAP } from "@/constant";
+import ShareModal from "@/components/ShareModal";
 
 export const columns: ColumnDef<FileType>[] = [
   {
@@ -40,14 +41,5 @@ export const columns: ColumnDef<FileType>[] = [
   {
     accessorKey: "downloadURL",
     header: "Link",
-    cell: (info) => (
-      <a
-        href={info.getValue<string>()}
-        target="_blank"
-        className="underline text-green-500 hover:text-green-600"
-      >
-        Download
-      </a>
-    ),
   },
 ];

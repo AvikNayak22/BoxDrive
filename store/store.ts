@@ -7,6 +7,9 @@ interface AppState {
   isRenameModalOpen: boolean;
   setIsRenameModalOpen: (open: boolean) => void;
 
+  isShareModalOpen: boolean;
+  setIsShareModalOpen: (open: boolean) => void;
+
   fileId: string | null;
   setFileId: (fileId: string) => void;
 
@@ -32,6 +35,9 @@ export const useAppStore = create<AppState>((set) => ({
 
   isRenameModalOpen: false,
   setIsRenameModalOpen: (open) => set((state) => ({ isRenameModalOpen: open })),
+
+  isShareModalOpen: false,
+  setIsShareModalOpen: (open) => set((state) => ({ isShareModalOpen: open })),
 
   rowsOnCurrentPage: 0,
   setRowsOnCurrentPage: (count: number) => set({ rowsOnCurrentPage: count }),

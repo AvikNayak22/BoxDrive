@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
-import { Noto_Sans } from "next/font/google";
+import { Red_Hat_Display } from "next/font/google";
 import { ClerkProvider } from "@clerk/nextjs";
 import "./globals.css";
 import Header from "@/components/Header";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
 
-const notoSans = Noto_Sans({ subsets: ["latin"] });
+const red_hat_display = Red_Hat_Display({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "BoxDrive",
@@ -22,7 +22,7 @@ export default function RootLayout({
   return (
     <ClerkProvider afterSignOutUrl="/">
       <html lang="en">
-        <body className={notoSans.className}>
+        <body className={red_hat_display.className}>
           <ThemeProvider
             attribute="class"
             defaultTheme="system"

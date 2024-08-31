@@ -13,7 +13,7 @@ import {
 } from "firebase/firestore";
 import { db, storage } from "@/firebase";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
-import { toast} from "sonner";
+import { toast } from "sonner";
 
 const DropzoneComponent = () => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -91,7 +91,7 @@ const DropzoneComponent = () => {
             <div
               {...getRootProps()}
               className={cn(
-                "w-full h-52 flex justify-center items-center p-5 border-2 border-dashed border-green-300 dark:border-green-300 rounded-lg text-center",
+                "w-full h-64 flex justify-center items-center p-5 border-2 border-dashed border-green-300 dark:border-green-300 rounded-lg text-center",
                 isDragActive
                   ? "bg-green-400/60 dark:bg-green-500/80 text-white animate-pulse"
                   : "bg-green-200/40 dark:bg-green-300/40 text-green-300 dark:text-green-300"
