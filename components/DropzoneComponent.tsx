@@ -13,7 +13,7 @@ import {
 } from "firebase/firestore";
 import { db, storage } from "@/firebase";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
-import { toast } from "sonner";
+import { toast} from "sonner";
 
 const DropzoneComponent = () => {
   const [loading, setLoading] = useState<boolean>(false);

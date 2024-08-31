@@ -15,6 +15,9 @@ interface AppState {
 
   rowsOnCurrentPage: number;
   setRowsOnCurrentPage: (count: number) => void;
+
+  sort: "asc" | "desc";
+  setSort: (sort: "asc" | "desc") => void;
 }
 
 export const useAppStore = create<AppState>((set) => ({
@@ -32,4 +35,7 @@ export const useAppStore = create<AppState>((set) => ({
 
   rowsOnCurrentPage: 0,
   setRowsOnCurrentPage: (count: number) => set({ rowsOnCurrentPage: count }),
+
+  sort: "asc",
+  setSort: (sort) => set({ sort }),
 }));

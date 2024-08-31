@@ -17,7 +17,7 @@ const TableWrapper = ({ skeletonFiles }: { skeletonFiles: FileType[] }) => {
 
   const [initialFiles, setInitialFiles] = useState<FileType[]>([]);
 
-  const [sort, setSort] = useState<"asc" | "desc">("asc");
+  const sort = useAppStore((state) => state.sort);
 
   const rowsOnCurrentPage = useAppStore((state) => state.rowsOnCurrentPage);
 
@@ -82,15 +82,7 @@ const TableWrapper = ({ skeletonFiles }: { skeletonFiles: FileType[] }) => {
     );
 
   return (
-    <div className="flex flex-col space-y-5 pb-10">
-      <Button
-        className="ml-auto w-fit"
-        variant="outline"
-        onClick={() => setSort(sort === "desc" ? "asc" : "desc")}
-      >
-        Sort By {sort === "desc" ? "Oldest" : "Newest"}
-      </Button>
-
+    <div className="space-y-5 pb-10">
       <DataTable columns={columns} data={initialFiles} />
     </div>
   );

@@ -6,6 +6,8 @@ import {
   getCoreRowModel,
   useReactTable,
   getPaginationRowModel,
+  ColumnFiltersState,
+  getFilteredRowModel,
 } from "@tanstack/react-table";
 
 import {
@@ -28,6 +30,8 @@ import { useAppStore } from "@/store/store";
 import { DeleteModal } from "../DeleteModal";
 import RenameModal from "../RenameModal";
 import { useEffect, useState } from "react";
+import { Input } from "../ui/input";
+// import TablePagination from "./TablePagination";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -43,6 +47,8 @@ export function DataTable<TData, TValue>({
     pageSize: 5,
   });
 
+  const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
+
   useEffect(() => {
     const storedPagination = localStorage.getItem("tablePagination");
     if (storedPagination) {
@@ -55,8 +61,11 @@ export function DataTable<TData, TValue>({
     columns,
     getCoreRowModel: getCoreRowModel(),
     getPaginationRowModel: getPaginationRowModel(),
+    onColumnFiltersChange: setColumnFilters,
+    getFilteredRowModel: getFilteredRowModel(),
     state: {
       pagination,
+      columnFilters,
     },
     onPaginationChange: (updater) => {
       const newPagination =
@@ -83,12 +92,16 @@ export function DataTable<TData, TValue>({
     setIsDeleteModalOpen,
     setIsRenameModalOpen,
     setRowsOnCurrentPage,
+    sort,
+    setSort,
   ] = useAppStore((state) => [
     state.setFileId,
     state.setFilename,
     state.setIsDeleteModalOpen,
     state.setIsRenameModalOpen,
     state.setRowsOnCurrentPage,
+    state.sort,
+    state.setSort,
   ]);
 
   function openDeleteModal(fileId: string) {
@@ -110,6 +123,25 @@ export function DataTable<TData, TValue>({
     <>
       <DeleteModal />
       <RenameModal />
+      <div className="flex items-center py-4">
+        <Input
+          placeholder="Search by name..."
+          value={
+            (table.getColumn("filename")?.getFilterValue() as string) ?? ""
+          }
+          onChange={(event) =>
+            table.getColumn("filename")?.setFilterValue(event.target.value)
+          }
+          className="max-w-sm"
+        />
+        <Button
+          className="ml-auto w-fit"
+          variant="outline"
+          onClick={() => setSort(sort === "desc" ? "asc" : "desc")}
+        >
+          Sort By {sort === "desc" ? "Oldest" : "Newest"}
+        </Button>
+      </div>
       <div className="rounded-md border">
         <Table>
           <TableHeader>
@@ -213,6 +245,7 @@ export function DataTable<TData, TValue>({
           <CaretRightIcon className="size-5 " />
         </Button>
       </div>
+      {/* <TablePagination table={table} /> */}
     </>
   );
 }
