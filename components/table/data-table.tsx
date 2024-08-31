@@ -31,7 +31,7 @@ import { DeleteModal } from "../DeleteModal";
 import RenameModal from "../RenameModal";
 import { useEffect, useState } from "react";
 import { Input } from "../ui/input";
-// import TablePagination from "./TablePagination";
+import TablePagination from "./TablePagination";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -123,9 +123,9 @@ export function DataTable<TData, TValue>({
     <>
       <DeleteModal />
       <RenameModal />
-      <div className="flex items-center py-4">
+      <div className="flex justify-start gap-2 items-center py-4">
         <Input
-          placeholder="Search by name..."
+          placeholder="Search filename..."
           value={
             (table.getColumn("filename")?.getFilterValue() as string) ?? ""
           }
@@ -135,7 +135,7 @@ export function DataTable<TData, TValue>({
           className="max-w-sm"
         />
         <Button
-          className="ml-auto w-fit"
+          className="w-fit"
           variant="outline"
           onClick={() => setSort(sort === "desc" ? "asc" : "desc")}
         >
@@ -227,25 +227,7 @@ export function DataTable<TData, TValue>({
           </TableBody>
         </Table>
       </div>
-      <div className="flex items-center justify-center space-x-2 py-4">
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => table.previousPage()}
-          disabled={!table.getCanPreviousPage()}
-        >
-          <CaretLeftIcon className="size-5 " />
-        </Button>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={() => table.nextPage()}
-          disabled={!table.getCanNextPage()}
-        >
-          <CaretRightIcon className="size-5 " />
-        </Button>
-      </div>
-      {/* <TablePagination table={table} /> */}
+      <TablePagination table={table} />
     </>
   );
 }
