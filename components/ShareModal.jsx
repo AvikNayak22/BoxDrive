@@ -1,17 +1,15 @@
 "use client";
 
 import {
-  FacebookShareButton,
   TwitterShareButton,
   LinkedinShareButton,
   WhatsappShareButton,
   EmailShareButton,
-  RedditShareButton,
-  FacebookIcon,
+  TelegramShareButton,
   TwitterIcon,
   LinkedinIcon,
   WhatsappIcon,
-  RedditIcon,
+  TelegramIcon,
   EmailIcon,
 } from "react-share";
 
@@ -50,7 +48,7 @@ const ShareModal = ({ downloadURL }) => {
         setIsShareModalOpen(isOpen);
       }}
     >
-      <DialogContent className="sm:max-w-md mx-auto">
+      <DialogContent className="sm:max-w-md flex justify-center flex-col">
         <DialogHeader>
           <DialogTitle className="text-center text-xl font-semibold">
             Share
@@ -61,9 +59,6 @@ const ShareModal = ({ downloadURL }) => {
         </DialogDescription>
 
         <div className="flex flex-wrap justify-center items-center gap-4 mt-3">
-          <FacebookShareButton url={downloadURL}>
-            <FacebookIcon size={48} round />
-          </FacebookShareButton>
           <TwitterShareButton url={downloadURL}>
             <TwitterIcon size={48} round />
           </TwitterShareButton>
@@ -73,9 +68,9 @@ const ShareModal = ({ downloadURL }) => {
           <WhatsappShareButton url={downloadURL}>
             <WhatsappIcon size={48} round />
           </WhatsappShareButton>
-          <RedditShareButton url={downloadURL}>
-            <RedditIcon size={48} round />
-          </RedditShareButton>
+          <TelegramShareButton url={downloadURL}>
+            <TelegramIcon size={48} round />
+          </TelegramShareButton>
           <EmailShareButton url={downloadURL}>
             <EmailIcon size={48} round />
           </EmailShareButton>
