@@ -131,17 +131,17 @@ export function DataTable<TData, TValue>({
       <ShareModal downloadURL={downloadURL} />
       <div className="flex justify-start gap-2 items-center py-4">
         <Input
-          placeholder="Search filename..."
+          placeholder="Search for file..."
           value={
             (table.getColumn("filename")?.getFilterValue() as string) ?? ""
           }
           onChange={(event) =>
             table.getColumn("filename")?.setFilterValue(event.target.value)
           }
-          className="max-w-sm px-4 py-2 text-sm"
+          className="max-w-sm px-4 py-2 text-base"
         />
         <Button
-          className="w-fit px-4 py-2 text-sm"
+          className="w-fit px-4 py-2 text-base"
           variant="outline"
           onClick={() => setSort(sort === "desc" ? "asc" : "desc")}
         >
@@ -156,7 +156,7 @@ export function DataTable<TData, TValue>({
                 {headerGroup.headers.map((header) => (
                   <TableHead
                     key={header.id}
-                    className="px-4 py-2 text-sm font-medium"
+                    className="px-4 py-2 text-base font-medium"
                   >
                     {header.isPlaceholder
                       ? null
@@ -177,10 +177,10 @@ export function DataTable<TData, TValue>({
                   data-state={row.getIsSelected() && "selected"}
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id} className="px-4 py-2 text-sm">
+                    <TableCell key={cell.id} className="px-4 py-2 text-base">
                       {cell.column.id === "timeStamp" ? (
                         <div className="flex flex-col">
-                          <div className="text-sm">
+                          <div className="text-base">
                             {(cell.getValue() as Date).toLocaleDateString()}
                           </div>
                           <div className="text-xs text-gray-500">
@@ -208,7 +208,7 @@ export function DataTable<TData, TValue>({
                               cell.getValue() as string
                             )
                           }
-                          className="underline cursor-pointer text-green-500 hover:text-green-600"
+                          className="underline cursor-pointer text-base text-green-500 hover:text-green-600"
                         >
                           Share
                         </p>
@@ -220,7 +220,7 @@ export function DataTable<TData, TValue>({
                       )}
                     </TableCell>
                   ))}
-                  <TableCell className="px-4 py-2 text-sm">
+                  <TableCell className="px-4 py-2 text-base">
                     <Button
                       variant="outline"
                       onClick={() => {
@@ -237,7 +237,7 @@ export function DataTable<TData, TValue>({
               <TableRow>
                 <TableCell
                   colSpan={columns.length}
-                  className="h-24 text-center text-sm"
+                  className="h-24 text-center text-base"
                 >
                   You have no files.
                 </TableCell>

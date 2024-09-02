@@ -77,10 +77,10 @@ export function DeleteModal() {
           </DialogDescription>
         </DialogHeader>
 
-        <DialogFooter className="flex space-x-2 py-3">
+        <DialogFooter className="flex gap-2 py-3">
           <Button
             size="sm"
-            className="px-3 flex-1"
+            className="px-3"
             variant="secondary"
             onClick={() => setIsDeleteModalOpen(false)}
           >
@@ -91,7 +91,7 @@ export function DeleteModal() {
           <Button
             type="submit"
             size="sm"
-            className="px-3 flex-1"
+            className="px-3"
             variant="destructive"
             onClick={() => deleteFile()}
           >

@@ -50,9 +50,9 @@ const ShareModal = ({ downloadURL }) => {
         setIsShareModalOpen(isOpen);
       }}
     >
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="sm:max-w-md mx-auto">
         <DialogHeader>
-          <DialogTitle className="text-center text-2xl font-semibold">
+          <DialogTitle className="text-center text-xl font-semibold">
             Share
           </DialogTitle>
         </DialogHeader>

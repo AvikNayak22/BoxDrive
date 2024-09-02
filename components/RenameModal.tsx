@@ -62,7 +62,7 @@ const RenameModal = () => {
         setIsRenameModalOpen(isOpen);
       }}
     >
-      <DialogContent>
+      <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle className="pb-2">Rename the File</DialogTitle>
           <Input
@@ -76,7 +76,7 @@ const RenameModal = () => {
             }}
           />
         </DialogHeader>
-        <DialogFooter className="flex justify-end space-x-2 py-3">
+        <DialogFooter className="flex gap-2 py-3">
           <Button
             size="sm"
             className="px-3"
