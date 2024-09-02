@@ -5,7 +5,6 @@ import { DefaultExtensionType, defaultStyles, FileIcon } from "react-file-icon";
 import { ColumnDef } from "@tanstack/react-table";
 import prettyBytes from "pretty-bytes";
 import { COLOR_EXTENSION_MAP } from "@/constant";
-import ShareModal from "@/components/ShareModal";
 
 export const columns: ColumnDef<FileType>[] = [
   {

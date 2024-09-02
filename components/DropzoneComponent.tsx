@@ -14,6 +14,7 @@ import {
 import { db, storage } from "@/firebase";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { toast } from "sonner";
+import { UploadIcon } from "@radix-ui/react-icons";
 
 const DropzoneComponent = () => {
   const [loading, setLoading] = useState<boolean>(false);
@@ -87,22 +88,40 @@ const DropzoneComponent = () => {
           fileRejections.length > 0 && fileRejections[0].file.size > maxSize;
 
         return (
-          <section className="m-4 cursor-pointer">
+          <section className="p-6 flex flex-col items-center justify-center gap-4">
             <div
               {...getRootProps()}
               className={cn(
-                "w-full h-64 flex justify-center items-center p-5 border-2 border-dashed border-green-300 dark:border-green-300 rounded-lg text-center sm:text-xl",
+                "w-full max-w-lg p-8 border-2 border-dashed rounded-md flex flex-col items-center justify-center transition-all",
                 isDragActive
-                  ? "bg-green-400/60 dark:bg-green-500/80 text-white animate-pulse"
-                  : "bg-green-200/40 dark:bg-green-300/40 text-green-400 dark:text-green-300"
+                  ? "border-green-500 bg-green-50 dark:bg-green-900/60 dark:border-green-400"
+                  : "border-gray-300 bg-gray-100 dark:bg-gray-700",
+                isDragReject &&
+                  "border-red-500 bg-red-50 dark:bg-red-900/60 dark:border-red-400"
               )}
             >
               <input {...getInputProps()} />
-              {!isDragActive && "Click here or drop a file to upload!"}
-              {isDragActive && !isDragReject && "Drop to upload this file!"}
-              {isDragReject && "File type not accepted, sorry!"}
+              <UploadIcon
+                className={cn(
+                  "h-16 w-16 mb-4 transition-transform",
+                  isDragActive
+                    ? "text-green-500 animate-bounce"
+                    : "text-gray-500 dark:text-gray-400",
+                  isDragReject && "text-red-500"
+                )}
+              />
+
+              <p className="text-center text-700 dark:text-gray-300 font-medium">
+                {isDragReject
+                  ? "File type not accepted, sorry!"
+                  : isDragActive
+                  ? "Drop the file to upload!"
+                  : "Click to browse or drag and drop your file here"}
+              </p>
               {isFileTooLarge && (
-                <div className="text-danger mt-2">File is too large.</div>
+                <div className="mt-3 text-red-600 dark:text-red-400 text-sm">
+                  File is too large. Please select a smaller file.
+                </div>
               )}
             </div>
           </section>
