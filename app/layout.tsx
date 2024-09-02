@@ -5,6 +5,7 @@ import "./globals.css";
 import Header from "@/components/Header";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/sonner";
+import Footer from "@/components/Footer";
 
 const red_hat_display = Red_Hat_Display({ subsets: ["latin"] });
 
@@ -31,6 +32,7 @@ export default function RootLayout({
           >
             <Header />
             {children}
+            <Footer />
             <Toaster position="top-center" />
           </ThemeProvider>
         </body>

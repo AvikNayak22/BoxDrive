@@ -88,7 +88,7 @@ const DropzoneComponent = () => {
           fileRejections.length > 0 && fileRejections[0].file.size > maxSize;
 
         return (
-          <section className="p-6 flex flex-col items-center justify-center gap-4">
+          <section className="px-6 py-11 flex flex-col items-center justify-center gap-4">
             <div
               {...getRootProps()}
               className={cn(

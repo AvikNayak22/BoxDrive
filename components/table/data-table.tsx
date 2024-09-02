@@ -138,10 +138,10 @@ export function DataTable<TData, TValue>({
           onChange={(event) =>
             table.getColumn("filename")?.setFilterValue(event.target.value)
           }
-          className="max-w-sm"
+          className="max-w-sm px-4 py-2 text-sm"
         />
         <Button
-          className="w-fit"
+          className="w-fit px-4 py-2 text-sm"
           variant="outline"
           onClick={() => setSort(sort === "desc" ? "asc" : "desc")}
         >
@@ -153,18 +153,19 @@ export function DataTable<TData, TValue>({
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
-                {headerGroup.headers.map((header) => {
-                  return (
-                    <TableHead key={header.id}>
-                      {header.isPlaceholder
-                        ? null
-                        : flexRender(
-                            header.column.columnDef.header,
-                            header.getContext()
-                          )}
-                    </TableHead>
-                  );
-                })}
+                {headerGroup.headers.map((header) => (
+                  <TableHead
+                    key={header.id}
+                    className="px-4 py-2 text-sm font-medium"
+                  >
+                    {header.isPlaceholder
+                      ? null
+                      : flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                  </TableHead>
+                ))}
               </TableRow>
             ))}
           </TableHeader>
@@ -176,7 +177,7 @@ export function DataTable<TData, TValue>({
                   data-state={row.getIsSelected() && "selected"}
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id}>
+                    <TableCell key={cell.id} className="px-4 py-2 text-sm">
                       {cell.column.id === "timeStamp" ? (
                         <div className="flex flex-col">
                           <div className="text-sm">
@@ -194,10 +195,10 @@ export function DataTable<TData, TValue>({
                               (row.original as FileType).filename
                             );
                           }}
-                          className="underline flex items-center text-green-500 hover:cursor-pointer"
+                          className="underline flex items-center text-green-500 hover:cursor-pointer hover:text-green-600"
                         >
                           {cell.getValue() as string}
-                          <Pencil1Icon className="ml-2 size-4" />
+                          <Pencil1Icon className="ml-2 w-4 h-4" />
                         </p>
                       ) : cell.column.id === "downloadURL" ? (
                         <p
@@ -219,15 +220,15 @@ export function DataTable<TData, TValue>({
                       )}
                     </TableCell>
                   ))}
-
-                  <TableCell key={(row.original as FileType).id}>
+                  <TableCell className="px-4 py-2 text-sm">
                     <Button
                       variant="outline"
                       onClick={() => {
                         openDeleteModal((row.original as FileType).id);
                       }}
+                      className="px-2 py-1"
                     >
-                      <TrashIcon className="size-5 " color="red" />
+                      <TrashIcon className="w-5 h-5" color="red" />
                     </Button>
                   </TableCell>
                 </TableRow>
@@ -236,7 +237,7 @@ export function DataTable<TData, TValue>({
               <TableRow>
                 <TableCell
                   colSpan={columns.length}
-                  className="h-24 text-center"
+                  className="h-24 text-center text-sm"
                 >
                   You have no files.
                 </TableCell>
@@ -245,6 +246,7 @@ export function DataTable<TData, TValue>({
           </TableBody>
         </Table>
       </div>
+
       <TablePagination table={table} />
     </>
   );

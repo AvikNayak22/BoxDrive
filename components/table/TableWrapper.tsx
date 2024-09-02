@@ -6,7 +6,6 @@ import { collection, orderBy, query } from "firebase/firestore";
 import { useCollection } from "react-firebase-hooks/firestore";
 import { useUser } from "@clerk/nextjs";
 import { FileType } from "@/typings";
-import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { DataTable } from "./data-table";
 import { columns } from "./columns";
@@ -21,7 +20,7 @@ const TableWrapper = ({ skeletonFiles }: { skeletonFiles: FileType[] }) => {
 
   const rowsOnCurrentPage = useAppStore((state) => state.rowsOnCurrentPage);
 
-  const [docs, loading, error] = useCollection(
+  const [docs] = useCollection(
     user &&
       query(
         collection(db, "users", user.id, "files"),
@@ -58,7 +57,7 @@ const TableWrapper = ({ skeletonFiles }: { skeletonFiles: FileType[] }) => {
           <Skeleton className="w-32 h-9 rounded-md" />
         </div>
 
-        <div className="border rounded-lg">
+        <div className="border rounded-lg mt-5">
           <div className="border-b h-10" />
           {modifiedSkeletonFiles.map((file) => {
             return (
@@ -78,6 +77,17 @@ const TableWrapper = ({ skeletonFiles }: { skeletonFiles: FileType[] }) => {
               <Skeleton className="h-10 w-full" />
             </div>
           )}
+        </div>
+        <div className="flex items-center justify-center gap-2 px-2 py-4">
+          <Skeleton className="w-16 h-8 rounded-md" />
+
+          <div className="flex items-center space-x-2">
+            {[...Array(3)].map((_, index) => (
+              <Skeleton key={index} className="w-8 h-8 rounded-md" />
+            ))}
+          </div>
+
+          <Skeleton className="w-16 h-8 rounded-md" />
         </div>
       </div>
     );
